@@ -1,0 +1,17 @@
+1、dubbo-api  注册中心
+2、dubbo-consumer  消费者/swagger-ui/两个部分
+3、dubbo-provider  生产者服务
+
+暴漏swagger接口地址： 在消费者端
+http://localhost:8088/swagger-ui.html
+
+中间件：
+zookeeper  版本3.4.8 服务器10.1.11.81 服务器  是个单机器
+rabbitMQ
+  管理地址：http://10.1.11.81:15672
+  版本 rabbitmq-server-3.5.6-1.noarch
+            rabbitMQ的基本使用
+            service rabbitmq-server start
+            service rabbitmq-server restart
+            service rabbitmq-server stop
+            rabbitmqctl status  # 查看状态
