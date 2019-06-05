@@ -23,7 +23,7 @@ public class UploadFileCommon {
             //文件地址
             File file = new File("D:\\美女2.jpg");
             //声明参数集合
-            HashMap paramMap = new HashMap<>();
+            HashMap paramMap = new HashMap<String,Object>();
             //文件
             paramMap.put("file", file);
             //输出
@@ -57,7 +57,7 @@ public class UploadFileCommon {
         String result = "";
         try {
             InputStreamResource isr = new InputStreamResource(file.getInputStream(), file.getOriginalFilename());
-            Map<String, Object> params = new HashMap<>();
+            Map<String, Object> params = new HashMap<String,Object>();
             params.put("file", isr);
             params.put("path", "file");
             params.put("output", "json");

@@ -1,6 +1,7 @@
 package ck.janko.controller;
 
 
+import ck.janko.controller.carModel.ComFenceXY;
 import ck.janko.controller.carModel.GPSFenceList;
 import ck.janko.controller.carModel.Node;
 import ck.janko.controller.carModel.TotalMessage;
@@ -25,30 +26,45 @@ public class TestController {
 
     public static void main(String[] args) {
         List<GPSFenceList> list = new ArrayList<GPSFenceList>();
-        for (int i = 1; i < 10; i++) {
-            GPSFenceList gps = new GPSFenceList();
-            gps.setFence_Type(0);
-            if (i / 2 == 1)
-                gps.setFence_Type(1);
-            gps.setLat_w84(String.valueOf(121.438278 + i*0.1));
-            gps.setLng_w84(String.valueOf(37.440781 + i*0.1));
-            gps.setRadius(100);
-            list.add(gps);
+
+        //圆形
+        GPSFenceList gpsFenceList=new GPSFenceList();
+        gpsFenceList.setFence_Type(0);//圆形
+        gpsFenceList.setRadius(1000);
+
+        List<ComFenceXY> comFenceXYList=new ArrayList<ComFenceXY>();
+        ComFenceXY comFenceXY=new ComFenceXY();
+        comFenceXY.setLat_w84("116.464224");
+        comFenceXY.setLng_w84("39.92343");
+        comFenceXYList.add(comFenceXY);
+        gpsFenceList.setComFenceXYList(comFenceXYList);
+
+        list.add(gpsFenceList);
+
+
+        //添加多边形
+        gpsFenceList=new GPSFenceList();
+        gpsFenceList.setFence_Type(1);//多边形
+        String[] array={"116.379136,39.955073","116.361889,39.947551","116.361889,39.947551","116.40472,39.905942",
+                "116.430016,39.910369","116.442377,39.932504","116.438928,39.954188","116.409319,39.955737"};
+
+        for (int i =0; i<array.length;i++){
+            comFenceXY=new ComFenceXY();
+            comFenceXY.setLat_w84(array[i].split(",")[0]);
+            comFenceXY.setLng_w84(array[i].split(",")[1]);
+            comFenceXYList.add(comFenceXY);
         }
+        gpsFenceList.setComFenceXYList(comFenceXYList);
+        list.add(gpsFenceList);
+
+
         Node node = new Node();
         node.setVin("vin123456");
-        node.setGpsFenceList(list);
-        node.setTotalMessage(new TotalMessage("S116.426567","W39.957949"));
-
+        node.setGpsFenceList(list);//围栏的坐标点
+//        node.setTotalMessage(new TotalMessage("S116.426567","W39.957949")); //GPS的坐标点
+        node.setTotalMessage(new TotalMessage("S116.397534","W39.928963"));
         JSONObject jsonObj=new JSONObject(node);
         System.out.println(jsonObj.toString());
-//        JSONObject jsonObj=new JSONObject();
-//        jsonObj.put("Name","liangyongs");
-//        jsonObj.put("Id", 31);
-//        String[] likes={"java","golang","clang"};
-//        jsonObj.put("Lks", likes);
-//        System.out.println("发送给golang的消息是:");
-//        System.out.println(jsonObj);
         try{
             socket=new Socket("127.0.0.1",50000);
             in=new BufferedReader(new InputStreamReader(socket.getInputStream()));
